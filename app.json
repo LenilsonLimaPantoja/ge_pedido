@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "GE Pedido",
+    "slug": "ge_pedido",
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#174c4f"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#174c4f"
+      },
+      "package": "com.lenilonlimapantoja.ge_pedido"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "35e9fb77-940a-4c9f-a856-0a3e93e9e382"
+      }
+    }
+  }
+}
