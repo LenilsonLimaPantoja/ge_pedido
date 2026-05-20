@@ -140,7 +140,7 @@ const CadastrarPedidos = ({ funcao, openModal, reloadPedido, setReloadPedido }) 
             return
         }
 
-        if (parseFloat(precoProdPedido) < parseFloat(precoProdPedidoCopy) && parametrosPermissoes?.altera_preco_pedido == 2) {
+        if (parseFloat(precoProdPedido) < parseFloat(precoProdPedidoCopy) && parametrosPermissoes?.altera_preco_pedido == 2 && tipoPedido == 0) {
             Alert.alert('ATENÇÃO', 'Você não tem permisão para alterar o valor do produto para baixo', [{ onPress: () => null, text: 'entendi' }]);
             return
         }
@@ -261,9 +261,6 @@ const CadastrarPedidos = ({ funcao, openModal, reloadPedido, setReloadPedido }) 
             tipo: tipoPedido, // 0 = venda, 1 = troca
         };
 
-        console.log(dadosBody);
-        console.log(Apis.urlCreatePedidos);
-        console.log(await AsyncStorage.getItem('@ge_pedido_online_token'));
 
         if (cliente && produtosPedido.length > 0 && formaPagamento) {
             setLoadingPedido(true);
