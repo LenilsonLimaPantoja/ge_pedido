@@ -131,8 +131,6 @@ const CadastrarPedidos = ({ funcao, openModal, reloadPedido, setReloadPedido }) 
 
     const handleAddProdPedido = () => {
         verificarToken();
-        console.log('Produto', produto);
-
         const produtoExiste = produtosPedido.filter(item => item?.codpro == produto?.codigo);
 
         if (produtoExiste?.length > 0) {
@@ -279,7 +277,6 @@ const CadastrarPedidos = ({ funcao, openModal, reloadPedido, setReloadPedido }) 
                 setFormaPagamento();
                 setEtapa(1);
                 Alert.alert('SUCESSO', response?.data.retorno.mensagem, [{ text: 'confirmar', onPress: () => setLoadingPedido(false) }]);
-                console.log(response.data);
             } catch (error) {
                 funcao();
                 console.log(error.response.data);

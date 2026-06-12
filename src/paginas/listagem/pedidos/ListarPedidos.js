@@ -21,6 +21,7 @@ import AppBarModalClose from '../../../componentes/AppBarModalClose';
 import { axiosConfig } from '../../../axiosConfig';
 import SelectFormaPagamento from '../../select/SelectFormaPagamento';
 import Assinatura from '../../assinatura/Assinatura';
+import SelectQtRegistros from '../../select/SelectQtRegistros';
 const Item = ({ item, handleClickPedido, index }) => (
     <TouchableOpacity activeOpacity={0.5} style={[styles.item, { borderTopWidth: index === 0 ? 1 : 0, borderColor: '#d9d9d5' }]} onPress={() => handleClickPedido(item)}>
         <View style={styles.item?.itemLeft}>
@@ -54,6 +55,8 @@ const ListarPedidos = ({ navigation }) => {
     const [dataInicialFiltro, setDataInicialFiltro] = useState(`${ano}-${mes}-01`);
     const [dataFinalFiltro, setDataFinalFiltro] = useState(`${ano}-${mes}-${dia}`);
     const [pesquisarPedidoFiltro, setPesquisarPedidoFiltro] = useState('');
+    const [qtRegistrosSelected, setQtRegistrosSelected] = useState('30');
+    const [openCloseModalQtRegistros, setOpenCloseModalQtRegistros] = useState(false);
 
     const handleDataPedidos = async () => {
         setLoading(true);
@@ -63,7 +66,7 @@ const ListarPedidos = ({ navigation }) => {
                 representante_id: await AsyncStorage.getItem('@ge_pedido_online_representante_id'),
                 data_inicial: dataInicialFiltro,
                 data_final: dataFinalFiltro,
-                qt_registros: 30,
+                qt_registros: qtRegistrosSelected,
                 texto: pesquisarPedidoFiltro
             });
 
@@ -101,6 +104,8 @@ const ListarPedidos = ({ navigation }) => {
 
         try {
             const response = await axiosConfig.post(Apis.urlRelatorioPedidoVenda, body);
+            console.log(response?.data);
+
             await printRelatorioPedidos(response?.data.dados);
         } catch (error) {
             console.log(JSON.stringify(error.response?.data));
@@ -158,13 +163,12 @@ const ListarPedidos = ({ navigation }) => {
                 forma_pagamento_id: dadosAlterarPedido?.id,
                 id: pedidoClicado?.id
             }
-
             const response = await axiosConfig.put(Apis.urlUpdateFormaPgto, dadosRequest);
-            Alert.alert('SUCESSO', response?.data.retorno.mensagem, [{ text: 'confirmar', onPress: () => setReload(!reload) }]);
-        } catch (error) {
-            Alert.alert('ATENÇÃO', error.response?.data.retorno.mensagem, [{ text: 'confirmar', onPress: () => setReload(!reload) }]);
-        }
+            Alert.alert('SUCESSO', response?.data.retorno?.mensagem || 'Pedido alterado com sucesso!', [{ text: 'confirmar', onPress: () => setReload(!reload) }]);
 
+        } catch (error) {
+            Alert.alert('ATENÇÃO', error.response?.data.retorno?.mensagem || 'Erro ao alterar pedido, tente novamente', [{ text: 'confirmar', onPress: () => setReload(!reload) }]);
+        }
     }
 
     const arrayFuncFab = [
@@ -242,7 +246,8 @@ const ListarPedidos = ({ navigation }) => {
                         <AreaModalBtnInput>
                             <Data valor={dataInicialFiltro} setValor={setDataInicialFiltro} />
                             <Data valor={dataFinalFiltro} setValor={setDataFinalFiltro} />
-                            <InputComponent setValor={setPesquisarPedidoFiltro} valor={pesquisarPedidoFiltro} placeholder='Digite para fazer a busca' />
+                            <InputComponent borderBottomWidth={1} setValor={setPesquisarPedidoFiltro} valor={pesquisarPedidoFiltro} placeholder='Digite para fazer a busca' />
+                            <ButtonInput texto={`Mostrar ${qtRegistrosSelected} registros por página`} funcao={() => setOpenCloseModalQtRegistros(true)} />
                         </AreaModalBtnInput>
                         <ButtonInput bgColor='#3b97ee' color='#fff' texto='aplicar filtro' funcao={handleDataPedidos}>
                             <MaterialCommunityIcons name='filter-outline' style={[styles.iconeModal, { color: '#fff' }]} />
@@ -258,6 +263,8 @@ const ListarPedidos = ({ navigation }) => {
                     <FabButtons openClose={openCloseModalFabButtons} setOpenClose={setOpenCloseModalFabButtons} arrayFuncFab={arrayFuncFab} />
 
                     <CadastrarPedidos reloadPedido={reload} setReloadPedido={setReload} funcao={() => setOpenCloseModalCadastrarPedido(false)} openModal={openCloseModalCadastrarPedido} />
+
+                    <SelectQtRegistros openClose={openCloseModalQtRegistros} setOpenClose={setOpenCloseModalQtRegistros} setQtRegistrosSelected={setQtRegistrosSelected} qtRegistrosSelected={qtRegistrosSelected} />
                 </>
                 : <Loading />
             }

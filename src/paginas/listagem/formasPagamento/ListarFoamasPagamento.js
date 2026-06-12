@@ -41,7 +41,7 @@ const ListarFoamasPagamento = ({ navigation }) => {
         setOpenCloseModalFiltroFormaPagamento(false);
         setLoading(true);
         try {
-            const response = await axiosConfig.post(Apis.urlReadFormasPgto, {})
+            const response = await axiosConfig.get(`${Apis.urlReadFormasPgto}?pesquisa=${pesquisarFormaPagamentoFiltro}`);
             setFormasPgto(response.data.registros);
         } catch (error) {
             console.log(error.response.data);

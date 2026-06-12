@@ -19,7 +19,7 @@ const Apis = {
   // rotas
   urlReadRotas: `${URL_BASE}rotas/read`,
   // formas de pagamento
-  urlReadFormasPgto: `${URL_BASE}formaspagamento/read`,
+  urlReadFormasPgto: `${URL_BASE}formaspagamento`,
   // formas de pagamento one
   urlReadFormasPgtoOne: `${URL_BASE}formaspagamento/read_one`,
   // motivos das visitas
